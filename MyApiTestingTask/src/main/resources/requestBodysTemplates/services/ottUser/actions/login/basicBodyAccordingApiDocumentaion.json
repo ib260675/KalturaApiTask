@@ -1,0 +1,13 @@
+{
+  "partnerId": 111,
+  "username": "username",
+  "password": "password",
+  "extraParams": {
+    "item1": {
+      "objectType": "KalturaStringValue",
+      "description": "description",
+      "value": "value"
+    }
+  },
+  "udid": "udid"
+}

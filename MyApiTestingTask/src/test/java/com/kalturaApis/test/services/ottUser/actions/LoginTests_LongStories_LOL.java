@@ -1,12 +1,12 @@
 package com.kalturaApis.test.services.ottUser.actions;
 
-import com.kalturaApis.constants.KalturaApiErrorMessages;
 import com.kalturaApis.constants.KalturaApiServices;
 import com.kalturaApis.constants.KalturaApiVerificationForAssertionMessages;
 import com.kalturaApis.constants.KalturaObjectTypes;
-import com.kalturaApis.pojos.errors.ErrorResponse;
-import com.kalturaApis.pojos.services.ottUser.actions.register.rquestAccordingExercise.RegisterPostBody;
+import com.kalturaApis.pojos.services.ottUser.actions.login.requestAccordingApiDocumentation.LoginPostBody;
+import com.kalturaApis.pojos.services.ottUser.actions.login.responses.validLoginResponse.SuccessfulLoginResponse;
 import com.kalturaApis.pojos.services.ottUser.actions.register.responses.validRegisteringResponse.SuccessfulRegisteringResponse;
+import com.kalturaApis.pojos.services.ottUser.actions.register.rquestAccordingExercise.RegisterPostBody;
 import com.kalturaApis.test.BaseTest;
 import io.restassured.mapper.ObjectMapperType;
 import io.restassured.response.Response;
@@ -19,14 +19,14 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class RegisterTests extends BaseTest {
+public class LoginTests_LongStories_LOL extends BaseTest {
 
     @BeforeTest
     protected void setup(){
     }
 
-    @Test(description="basic straight farward register action with unique values where needed which expected to create new KalturaOTTUser.")
-    public void validateBasicSuccessfulRegistering()
+    @Test(description="basic straight farward login action with unique values where needed which expected to login successfuly.")
+    public void validateBasicSuccessfulLogin()
     {
         RequestSpecification requestSpecification;
         Response resp;
@@ -36,6 +36,7 @@ public class RegisterTests extends BaseTest {
 
         //init and configure the request specification
         requestSpecification = getRequestSpecification();
+
         //load template json of the relevant post request
         thePostJson = getBody(KalturaApiServices.OttUser.RequestBodysTemplates.Actions.Register.BASIC);
         //parse to object
@@ -100,30 +101,24 @@ public class RegisterTests extends BaseTest {
                         successfulRegisteringResponse.getResult().getExternal_id(),
                         generatedAndExpectedExternalId)
         );
+        //verify register was ok
         softAssert.assertAll();
-    }
 
-    @Test(description="basic straight farward register action with existing external ID")
-    public void validateExternalIdAlreadyExistError()
-    {
-        RequestSpecification requestSpecification;
-        Response resp;
-        String thePostJson;
-
-        //init and configure the request specification
-        requestSpecification = getRequestSpecification();
+        //from here handle the login
+        //###################################################
         //load template json of the relevant post request
-        thePostJson = getBody(KalturaApiServices.OttUser.RequestBodysTemplates.Actions.Register.BASIC);
+        thePostJson = getBody(KalturaApiServices.OttUser.RequestBodysTemplates.Actions.Login.BASIC);
         //parse to object
-        RegisterPostBody registerPostBody = gson.fromJson(thePostJson, RegisterPostBody.class);
-        // set a new name
-        registerPostBody.getUser().setUsername("irmi_" + System.nanoTime());
+        LoginPostBody loginPostBody = gson.fromJson(thePostJson, LoginPostBody.class);
+        // set the user and password created in the registration
+        loginPostBody.setUsername(generatedAndExpectedUserName);
+        loginPostBody.setPassword(registerPostBody.getPassword());
         // parse back to json to supply the post body
-        thePostJson = gson.toJson(registerPostBody);
+        thePostJson = gson.toJson(loginPostBody);
         //set the prepared body into spec
         requestSpecification.body(thePostJson);
         //execute the post request and log results to console
-        resp = given().spec(requestSpecification).post(KalturaApiServices.OttUser.ActionsEndPoints.REGISTER);
+        resp = given().spec(requestSpecification).post(KalturaApiServices.OttUser.ActionsEndPoints.LOGIN);
         resp.then().log().all();
 
         //hard assert on status code
@@ -135,60 +130,22 @@ public class RegisterTests extends BaseTest {
                 )
         );
 
-        //deserialize the error response
-        ErrorResponse errorResponse = resp.as(ErrorResponse.class, ObjectMapperType.GSON);
+        //deserialize the expected valid response
+        SuccessfulLoginResponse successfulLoginResponse = resp.as(SuccessfulLoginResponse.class, ObjectMapperType.GSON);
+        //assert the object type is ok
         softAssert.assertTrue(
-                errorResponse.getResult().getError().getMessage().
+                successfulLoginResponse.getResult().getObjectType().
                         equalsIgnoreCase(
-                                KalturaApiErrorMessages.EXTERNAL_ID_ALREADY_EXISTS),
-                reportExpVsActual(KalturaApiVerificationForAssertionMessages.EXTERNALID,
-                        errorResponse.getResult().getError().getMessage(),
-                        KalturaApiErrorMessages.EXTERNAL_ID_ALREADY_EXISTS)
+                                KalturaObjectTypes.KALTURA_LOGIN_RESPONSE),
+                reportExpVsActual(KalturaApiVerificationForAssertionMessages.OBJECT_TYPE,
+                        successfulLoginResponse.getResult().getObjectType(),
+                        KalturaObjectTypes.KALTURA_LOGIN_RESPONSE)
         );
-        softAssert.assertAll();
-    }
-
-    @Test(description="basic straight farward register action with existing username")
-    public void validateUserNameAlreadyExistError()
-    {
-        RequestSpecification requestSpecification;
-        Response resp;
-        String thePostJson;
-
-        //init and configure the request specification
-        requestSpecification = getRequestSpecification();
-        //load template json of the relevant post request
-        thePostJson = getBody(KalturaApiServices.OttUser.RequestBodysTemplates.Actions.Register.BASIC);
-        //parse to object
-        RegisterPostBody registerPostBody = gson.fromJson(thePostJson, RegisterPostBody.class);
-        // override and set a unique new external ID
-        registerPostBody.getUser().setExternalId("someExtID_" + System.nanoTime());
-        // parse back to json to supply the post body
-        thePostJson = gson.toJson(registerPostBody);
-        //set the prepared body into spec
-        requestSpecification.body(thePostJson);
-        //execute the post request and log results to console
-        resp = given().spec(requestSpecification).post(KalturaApiServices.OttUser.ActionsEndPoints.REGISTER);
-        resp.then().log().all();
-
-        //hard assert on status code
-        Assert.assertTrue(
-                resp.getStatusCode() == HttpStatus.SC_OK,
-                reportExpVsActual(KalturaApiVerificationForAssertionMessages.STATUS_CODE,
-                        resp.getStatusCode(),
-                        HttpStatus.SC_OK
-                )
-        );
-
-        //deserialize the error response
-        ErrorResponse errorResponse = resp.as(ErrorResponse.class, ObjectMapperType.GSON);
-        softAssert.assertTrue(
-                errorResponse.getResult().getError().getMessage().
-                        equalsIgnoreCase(
-                                KalturaApiErrorMessages.USER_EXISTS),
-                reportExpVsActual(KalturaApiVerificationForAssertionMessages.ERROR_MESSAGE,
-                        errorResponse.getResult().getError().getMessage(),
-                        KalturaApiErrorMessages.USER_EXISTS)
+        //assert the returned access token is not empty
+        softAssert.assertTrue(!successfulLoginResponse.getResult().getLoginSession().getKs().isEmpty(),
+                reportExpVsActual(KalturaApiVerificationForAssertionMessages.ACCESS_TOKEN,
+                        successfulLoginResponse.getResult().getLoginSession().getKs(),
+                        KalturaApiVerificationForAssertionMessages.NOT_EMPTY)
         );
         softAssert.assertAll();
     }

@@ -2,6 +2,7 @@ package com.kalturaApis.test;
 
 import com.google.gson.Gson;
 import com.kalturaApis.constants.KalturaApiServices;
+import com.kalturaApis.helpers.services.OttUserHelper;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -18,17 +19,18 @@ public abstract class BaseTest {
 
     protected Gson gson = new Gson();
     protected SoftAssert softAssert = new SoftAssert();
+    protected OttUserHelper ottUserHelper = new OttUserHelper();
 
     protected RequestSpecification getRequestSpecification() {
         System.out.println("set the specification content type to: " + KalturaApiServices.CONTENT_TYPE);
         return RestAssured.given().contentType(KalturaApiServices.CONTENT_TYPE);
     }
 
-    protected String reportExpVsActual(String actualVal,String expectedVal){
-        return "Actual value was: " + actualVal + ", Expected value was: " + expectedVal;
+    protected String reportExpVsActual(String verificationSubject, String actualVal,String expectedVal){
+        return "Verifying the following subject: '" + verificationSubject + "'. Actual value was: " + actualVal + ", Expected value was: " + expectedVal;
     }
-    protected String reportExpVsActual(int actualVal,int expectedVal){
-        return "Actual value was: " + actualVal + ", Expected value was: " + expectedVal;
+    protected String reportExpVsActual(String verificationSubject, int actualVal,int expectedVal){
+        return "Verifying the following subject: '" + verificationSubject + "'. Actual value was: " + actualVal + ", Expected value was: " + expectedVal;
     }
 
     @BeforeSuite

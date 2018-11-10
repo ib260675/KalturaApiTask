@@ -5,14 +5,21 @@ public final class KalturaApiServices {
     public static final String BASE_PATH = "/restful_v5_0/api_v3";
     public static final String CONTENT_TYPE = "application/json\n";
     public final class OttUser{
-        public final class EndPoints{
+        public final class ActionsEndPoints {
             public static final String REGISTER = "/service/ottuser/action/register";
             public static final String LOGIN ="/service/ottuser/action/login";
             public static final String UPDATE = "/service/ottuser/action/update";
         }
         public final class RequestBodysTemplates {
-            public static final String BASIC = "requestBodysTemplates/basicBody.json";
-            public static final String BODY_ACCORDING_API_DOCUMENTATION = "requestBodysTemplates/bodyAccordingDocumentation.json";
+            public final class Actions{
+                public final class Register{
+                    public static final String BASIC = "requestBodysTemplates/services/ottUser/actions/register/basicBody.json";
+                    public static final String BODY_ACCORDING_API_DOCUMENTATION = "requestBodysTemplates/services/ottUser/actions/register/bodyAccordingDocumentation.json";
+                }
+                public final class Login{
+                    public static final String BASIC = "requestBodysTemplates/services/ottUser/actions/login/basicBody.json";
+                }
+            }
         }
     }
 }
