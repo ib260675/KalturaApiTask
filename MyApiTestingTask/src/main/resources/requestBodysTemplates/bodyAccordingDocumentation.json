@@ -1,0 +1,30 @@
+{
+  "partnerId":123,
+  "user":{
+    "objectType":"KalturaOTTUser",
+    "username":"irmib11",
+    "firstName":"Irmi",
+    "lastName":"Barak",
+    "email":"bla@gmail.com",
+    "address":"add",
+    "city":"city",
+    "countryId":123,
+    "zip":"myzip",
+    "phone":"0522843375",
+    "affiliateCode":"affCode",
+    "externalId":"extID",
+    "userType":{
+      "objectType":"KalturaOTTUserType",
+      "description":"desc"
+    },
+    "dynamicData":{
+      "item1":{
+        "objectType":"KalturaStringValue",
+        "description":"desc",
+        "value":"value"
+      }
+    },
+    "roleIds":"myRols"
+  },
+  "password":"mypass"
+}

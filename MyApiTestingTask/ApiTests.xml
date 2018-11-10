@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="ApiTestingSuite" parallel="methods" thread-count="1" verbose="-1">
+    <listeners>
+        <listener class-name="com.testingFWHelpers.Listener"></listener>
+    </listeners>
+
+    <test name="ApiTest">
+        <packages>
+            <package name="com.kalturaApis.test.*"/>
+        </packages>
+    </test>
+</suite>

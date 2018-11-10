@@ -1,0 +1,10 @@
+{
+  "executionTime":0.0002006,
+  "result":{
+    "error":{
+      "code":"500003",
+      "message":"Content type is invalid",
+      "objectType":"KalturaAPIException"
+    }
+  }
+}
