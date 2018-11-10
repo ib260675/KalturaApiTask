@@ -25,3 +25,6 @@ hs_err_pid*
 #inteliij files
 *.iml
 .idea
+
+#maven
+target/
