@@ -95,6 +95,6 @@ public class OttUserHelper extends BaseService{
         //verify register was ok
         softAssert.assertAll();
 
-        return new OttUserHelperResponse(registerPostBody);
+        return new OttUserHelperResponse(successfulRegisteringResponse , registerPostBody);
     }
 }

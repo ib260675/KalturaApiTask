@@ -19,6 +19,9 @@ public final class KalturaApiServices {
                 public final class Login{
                     public static final String BASIC = "requestBodysTemplates/services/ottUser/actions/login/basicBody.json";
                 }
+                public final class Update{
+                    public static final String BASIC = "requestBodysTemplates/services/ottUser/actions/update/basicBody.json";
+                }
             }
         }
     }
