@@ -12,7 +12,7 @@ the runner is TestNG
 to start the execution just run the maven ApiTests.xml file in the project root.
 
 4.
-a parralell testing option can be set but then the console output is not synced... can be optimized with log4j appenders to create unique report for each test method...
+a parralell testing option can be set and working fine but then the console output is not synced... it should still be optimized with log4j appenders to handle correct and distinct logging for each thread.
 to set the parralelization just update the thread-count parameter in the ApiTests.xml:
 for example set it to 10 tests methods for iteration.
 <suite name="ApiTestingSuite" parallel="methods" thread-count="10" verbose="-1">
