@@ -22,7 +22,7 @@ for example set it to 10 tests methods for iteration.
 I kept the "thread-count" for 1 to keep the console reporting tracking easy...
 
 5.
- the testing framework idea was generally using lots of post request and response json templates with default values to serve as the base structure and then serializing/desirilizing them into pojo objects to json and vice versa.
+ the testing framework idea was generally using lots of post request and response json templates with default values to serve as the base structure and then serializing/desirilizing them into pojo objects (using gson) to json and vice versa.
 after the object is created the test can manipulate it for its needs for varios inputs, converts it back to json and sends it as the body to the post action.
 in this way its much easier to handle test data.
 
