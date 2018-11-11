@@ -32,7 +32,7 @@ for the exercise, the helpers section was created to save some code...
 for example:
 if register action was tested already, there is no need to see the register code again in login test.
 I did not have much time to implement all so just mentioned that to get the idea... a steps package would be the best approach to wrap all services and actions and when a test covers one of them, it will be allowed to be refred as helpable ;)
-In the end the tests should be as readable and understable as possible (what we call "plain english")and not just look like bunch of code.
+In the end the tests should be as readable and understable as possible (what we call "plain english") and not just look like bunch of code.
 
 6.1
  I used a lot of constants and wrappers all over the place to prevent as much hard coded values as I could.
